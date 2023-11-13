@@ -1,7 +1,11 @@
 import telebot
 from telebot import types
+import os
+from dotenv import load_dotenv
 
-token = "6483024611:AAFbrhUQETUEQJB2K5pwAmr8j8qUJ3bhZ7Y"
+load_dotenv()
+
+token = os.getenv("TOKEN")
 
 bot = telebot.TeleBot(token)
 
@@ -20,10 +24,12 @@ def send_welcome(message):
 
 @bot.callback_query_handler(func=lambda callback: True)
 def callback_message(callback):
+    username = str(callback.from_user.first_name)
+    bot.edit_message_reply_markup(callback.message.chat.id, callback.message.id, reply_markup=None)
     if callback.data == 'accept':
-        bot.send_message(callback.message.chat.id, "Accepted")
+        bot.send_message(callback.message.chat.id, "Accepted " + username)
     if callback.data == 'reject':
-        bot.send_message(callback.message.chat.id, "Rejected")
+        bot.send_message(callback.message.chat.id, "Rejected " + username)
 
 
 bot.infinity_polling()
