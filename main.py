@@ -2,21 +2,21 @@ import telebot
 from telebot import types
 import os
 from dotenv import load_dotenv
+import requests
 
 load_dotenv()
-
 token = os.getenv("TOKEN")
-
+url = os.getenv("URL")
 bot = telebot.TeleBot(token)
 
 
 @bot.message_handler()
 def monitor_chat(message):
-    markup = types.InlineKeyboardMarkup()
-    button1 = types.InlineKeyboardButton("Approve", callback_data='approve')
-    button2 = types.InlineKeyboardButton("Reject", callback_data='reject')
-    markup.add(button1, button2)
-    if "#summary" in message.text:
+    if '#summary' in message.text and '#summary' != message.text:
+        markup = types.InlineKeyboardMarkup()
+        button1 = types.InlineKeyboardButton("Approve", callback_data='approve')
+        button2 = types.InlineKeyboardButton("Reject", callback_data='reject')
+        markup.add(button1, button2)
         msg = bot.send_message(message.chat.id,
                                "Resolution:" + message.text.replace('#summary', ''),
                                reply_markup=markup)
@@ -30,7 +30,6 @@ def callback_message(callback):
     if callback.data == 'approve':
         bot.send_message(callback.message.chat.id,
                          "The resolution was approved")
-        send_json(callback.message, True)
     if callback.data == 'reject':
         bot.send_message(callback.message.chat.id,
                          "Please correct the resolution in accordance with the partner's request")
@@ -44,6 +43,7 @@ def send_json(message, status):
         "message_id": message.id,
         "status": status
     }
-    bot.send_message(message.chat.id, str(json))
+    requests.post(url, json)
+
 
 bot.infinity_polling()
