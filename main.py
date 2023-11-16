@@ -18,7 +18,7 @@ def monitor_chat(message):
         button2 = types.InlineKeyboardButton("Reject", callback_data='reject')
         markup.add(button1, button2)
         msg = bot.send_message(message.chat.id,
-                               "Resolution:" + message.text.replace('#summary', ''),
+                               "🚕 Resolution of the meeting:" + message.text.replace('#summary', ''),
                                reply_markup=markup)
         send_json(msg, True)
 
@@ -29,16 +29,16 @@ def callback_message(callback):
     bot.edit_message_reply_markup(callback.message.chat.id, callback.message.id, reply_markup=None)
     if callback.data == 'approve':
         bot.send_message(callback.message.chat.id,
-                         "The resolution was approved")
+                         "✅ The resolution was approved")
     if callback.data == 'reject':
         bot.send_message(callback.message.chat.id,
-                         "Please correct the resolution in accordance with the partner's request")
+                         "⛔️ Please correct the resolution in accordance with the partner's request")
         send_json(callback.message, False)
 
 
 def send_json(message, status):
     json = {
-        "resolution": message.text.replace('Resolution:', ''),
+        "resolution": message.text.replace("🚕 Resolution of the meeting:", ''),
         "chat_id": message.chat.id,
         "message_id": message.id,
         "status": status
