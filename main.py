@@ -10,10 +10,6 @@ url = os.getenv("URL")
 bot = telebot.TeleBot(token)
 
 
-def start_bot():
-    bot.infinity_polling()
-
-
 @bot.message_handler()
 def monitor_chat(message):
     if '#summary' in message.text and '#summary' != message.text:
@@ -48,3 +44,6 @@ def send_json(message, status):
         "status": status
     }
     requests.post(url, json)
+
+
+bot.infinity_polling()
