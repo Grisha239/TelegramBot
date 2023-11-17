@@ -44,6 +44,3 @@ def send_json(message, status):
         "status": status
     }
     requests.post(url, json)
-
-
-bot.infinity_polling()
