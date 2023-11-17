@@ -46,4 +46,5 @@ def send_json(message, status):
     requests.post(url, json)
 
 
-bot.infinity_polling()
+if __name__ == "__main__":
+    bot.infinity_polling()
