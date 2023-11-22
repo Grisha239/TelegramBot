@@ -38,7 +38,7 @@ def callback_message(callback):
 
 def send_json(message, status):
     json = {
-        "resolution": message.text.replace("🚕 Resolution of the meeting:", ''),
+        "resolution": message.text.replace('🚕 Resolution of the meeting:', ''),
         "chat_id": message.chat.id,
         "message_id": message.id,
         "status": status
