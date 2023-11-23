@@ -28,17 +28,23 @@ def callback_message(callback):
     username = str(callback.from_user.first_name)
     bot.edit_message_reply_markup(callback.message.chat.id, callback.message.id, reply_markup=None)
     if callback.data == 'approve':
+        bot.edit_message_text(chat_id=callback.message.chat.id,
+                              message_id=callback.message.id,
+                              text=callback.message.text + "\n\n✅ The resolution was approved")
         bot.send_message(callback.message.chat.id,
                          "✅ The resolution was approved")
     if callback.data == 'reject':
+        send_json(callback.message, False)
+        bot.edit_message_text(chat_id=callback.message.chat.id,
+                              message_id=callback.message.id,
+                              text=f"{callback.message.text}\n\n⛔️ Please correct the resolution in accordance with the partner's request")
         bot.send_message(callback.message.chat.id,
                          "⛔️ Please correct the resolution in accordance with the partner's request")
-        send_json(callback.message, False)
 
 
 def send_json(message, status):
     json = {
-        "resolution": f"{message.text.replace('🚕 Resolution of the meeting:', '')}",
+        "resolution": f"{message.text.replace("🚕 Resolution of the meeting:", '')}",
         "chat_id": message.chat.id,
         "message_id": message.id,
         "status": status
