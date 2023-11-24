@@ -43,13 +43,14 @@ def callback_message(callback):
 
 
 def send_json(message, status):
-    myjson = {
-        "resolution": f"{message.text.replace('🚕 Resolution of the meeting:', '').replace('\n', ' ').replace('\t', ' ')}",
+    message_text = message.text.replace('🚕 Resolution of the meeting:', '').replace('\n', ' ').replace('\t', ' ')
+    hook_info = {
+        "resolution": f"{message_text}",
         "chat_id": message.chat.id,
         "message_id": message.id,
         "status": status
     }
-    requests.post(url, myjson)
+    requests.post(url, hook_info)
 
 
 if __name__ == "__main__":
